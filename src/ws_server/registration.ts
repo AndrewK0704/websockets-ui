@@ -1,8 +1,10 @@
 import { WebSocket } from "ws";
-import { RegServerResponseData } from "./model";
+import { RegServerResponseData} from "./model";
 import { User } from "./model";
 import {WsSendCommands} from './index';
 import { v4 as uuidv4 } from 'uuid';
+import { updateRoom } from "./rooms";
+import { updateWinners } from "./winners";
 
 export const userDb: any =[];
 
@@ -90,6 +92,8 @@ export const registrationService = (ws: WebSocket, data: string) => {
         const result = JSON.stringify({type, data, id:0});
         ws.send(result);
         console.log(`answer: ${result}`);
+        updateRoom();
+        updateWinners(ws);
     }
 }; 
 
