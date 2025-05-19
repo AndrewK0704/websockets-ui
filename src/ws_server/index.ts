@@ -1,5 +1,6 @@
 import { WebSocket, WebSocketServer } from "ws";
 import { registrationService } from "./registration";
+import { createRoom } from "./rooms";
 //import {userDb} from './registration';
 //import fs from 'fs';
 
@@ -59,12 +60,12 @@ process.on("SIGINT", () => {
 
 const command = (ws: WebSocket, type: string, data: string) => {
     console.log(`cmd from frontend: ${type}`, data);
-  
 
     if (type === WsReceiveCommands.REG) {
         registrationService(ws, data);
-        
-        
+    }
+    if (type === WsReceiveCommands.CREATE_ROOM) {
+        createRoom(ws);
     }
 
 };

@@ -64,6 +64,8 @@ export const registrationService = (ws: WebSocket, data: string) => {
         const result = JSON.stringify({type, data, id:0});
         ws.send(result);
         console.log(`answer: ${result}`);
+        updateRoom();
+        updateWinners();
         
     } else if (incorrectPassword(dataParse.name, dataParse.password)) {
         const type = WsSendCommands.REG;
@@ -93,7 +95,7 @@ export const registrationService = (ws: WebSocket, data: string) => {
         ws.send(result);
         console.log(`answer: ${result}`);
         updateRoom();
-        updateWinners(ws);
+        updateWinners();
     }
 }; 
 
