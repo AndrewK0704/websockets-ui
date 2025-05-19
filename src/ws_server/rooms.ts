@@ -1,9 +1,8 @@
 import { WebSocket} from "ws";
 import { wsServer, WsSendCommands } from "./index";
-import { Room } from "./model";
+import { Room, AddUserToRoomClientResponseData} from "./model";
 import { v4 as uuidv4 } from 'uuid';
 import {userDb} from './registration';
-//import {WsReceiveCommands} from './index';
 
 let roomsDb:Room[]=[];
 
@@ -47,12 +46,27 @@ export const createRoom = (ws:WebSocket) => {
         }
       }
       updateRoom();
-      
-      
-      // const user = usersRepository.getUserByField('ws', ws);
-      // roomsRepository.createRoom(user);
-      // roomsService.updateRoom();
+
     } catch (error) {
       console.error(error);
     }
 }
+
+export const addUserToRoom = (ws: WebSocket, data: string) => {
+    try {
+      const { indexRoom }: AddUserToRoomClientResponseData = JSON.parse(data);
+      for (let i=0; i<userDb.length; i++){
+        if (ws===userDb[i].ws){
+          for(let j=0; j<roomsDb.length; j++){
+            if(roomsDb[j]?.roomId.toString()===indexRoom.toString() && roomsDb[j]?.roomUsers[0]?.name!==userDb[i].name){
+              roomsDb[j]?.roomUsers.push({name:userDb[i].name,index:userDb[i].index});
+              console.log(roomsDb[0]?.roomUsers);
+              updateRoom();
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }

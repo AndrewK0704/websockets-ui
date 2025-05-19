@@ -1,6 +1,6 @@
 import { WebSocket, WebSocketServer } from "ws";
 import { registrationService } from "./registration";
-import { createRoom } from "./rooms";
+import { createRoom, addUserToRoom } from "./rooms";
 //import {userDb} from './registration';
 //import fs from 'fs';
 
@@ -67,5 +67,9 @@ const command = (ws: WebSocket, type: string, data: string) => {
     if (type === WsReceiveCommands.CREATE_ROOM) {
         createRoom(ws);
     }
+    if (type === WsReceiveCommands.ADD_USER_TO_ROOM) {
+        addUserToRoom(ws, data);
+    }
+    
 
 };
